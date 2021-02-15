@@ -27,15 +27,16 @@ TORCH_MODULE(Net);
 
 ```
 
-前回保存した`model.pt`を読み込むには少し工夫がいる。まず、学習時のニューラルネットワークの設計部分をそのまま持ってくる。ただし、このとき構造体の名前を"構造体名"+"Impl"としなければならない(上の例ではNetImpl)。このように名前を付けるのは、そのあとのマクロ`TORCH_MODULE(Net)`によってクラス`Net`を新しく自動生成するためである(https://recruit.cct-inc.co.jp/tecblog/deep-learning/pytorch-cpp_02/ にわかりやすい説明が書かれてある)。何故かはわからないが、こうしないとモデルを読み込むことができない。
+前回保存した`model.pt`を読み込むには少し工夫がいる。まず、学習時のニューラルネットワークの設計部分をそのまま持ってくる。ただし、このとき構造体の名前を"構造体名"+"Impl"としなければならない(上の例ではNetImpl)。このように名前を付けるのは、そのあとのマクロ`TORCH_MODULE(Net)`によってクラス`Net`を新しく自動生成させるためである(https://recruit.cct-inc.co.jp/tecblog/deep-learning/pytorch-cpp_02/ にわかりやすい説明が書かれてある)。何故かはわからないが、こうしないとモデルを読み込むことができない。
 
 モデル読み込み
 -
-
+main 関数内の
 ```c++
     Net net;
     torch::load(net, "../model.pt");
 ```
+の部分でモデルを読み込んでいる。
 上のコードのように、まず`Net` のインスタンスを作り、`torch::load()`の第１引数に渡す。第２引数は保存した`model.pt`までのパスを渡す。
 あとは学習時と同じように`torch::Tensor`型の入力を作り、`net->forward()`で推論の結果を得ることができる。
 
@@ -55,7 +56,7 @@ TORCH_MODULE(Net);
 ```c++
 auto output = net->forward(tensor);
 ```
-などで推論結果を得たと、具体的な数値を取得するには
+などで推論結果を得たあと、具体的な数値を取得するには
 ```c++
 auto a = output[0][0].item<float>();
 auto b = output[0][1].item<float>();
