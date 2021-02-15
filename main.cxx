@@ -28,9 +28,5 @@ int main() {
     torch::Tensor tensor = torch::from_blob(v.data(), {4, 2});
 
     std::cout << net->forward(tensor) << std::endl;
-    auto output = net->forward(tensor);
-    std::cout << output[0][0] << " " << output[0][1] << std::endl;
-    auto a = output[0].data_ptr<float>();
-    std::cout << a[0] << std::endl;
     return 0;
 }
